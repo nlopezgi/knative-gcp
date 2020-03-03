@@ -22,11 +22,10 @@ import (
 
 	nethttp "net/http"
 
-	"go.opencensus.io/plugin/ochttp"
-	"go.opencensus.io/plugin/ochttp/propagation/b3"
 	"go.opencensus.io/trace"
 	"go.uber.org/zap"
 
+	"cloud.google.com/go/pubsub"
 	cloudevents "github.com/cloudevents/sdk-go"
 	"github.com/cloudevents/sdk-go/pkg/cloudevents/transport"
 	"github.com/cloudevents/sdk-go/pkg/cloudevents/transport/http"
@@ -38,6 +37,20 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"knative.dev/eventing/pkg/tracing"
 	"knative.dev/pkg/logging"
+)
+
+const (
+	// Constants for the underlying HTTP Client transport. These would enable better connection reuse.
+	// These are magic numbers, partly set based on empirical evidence running performance workloads, and partly
+	// based on what serving is doing. See https://github.com/knative/serving/blob/master/pkg/network/transports.go.
+	defaultHTTPMaxIdleConnections        = 1000
+	defaultHTTPMaxIdleConnectionsPerHost = 100
+
+	// Constants for the underlying PubSub Client transport. These would enable better throughput.
+	// As with the above constants, these are also magic numbers, partly set based on empirical evidence running
+	// performance workloads.
+	defaultPubSubMaxOutstandingMessages = 1000
+	defaultPubSubNumGoRoutines          = 100
 )
 
 var (
@@ -246,6 +259,11 @@ func (a *Adapter) newPubSubClient(ctx context.Context) (cloudevents.Client, erro
 		cepubsub.WithProjectID(a.Project),
 		cepubsub.WithTopicID(a.Topic),
 		cepubsub.WithSubscriptionAndTopicID(a.Subscription, a.Topic),
+		cepubsub.WithReceiveSettings(&pubsub.ReceiveSettings{
+			NumGoroutines:          defaultPubSubNumGoRoutines,
+			MaxOutstandingMessages: defaultPubSubMaxOutstandingMessages,
+			Synchronous:            false,
+		}),
 	}
 
 	// Make a pubsub transport for the CloudEvents client.
@@ -272,19 +290,17 @@ func (a *Adapter) newHTTPClient(ctx context.Context, target string) (cloudevents
 		tOpts = append(tOpts, cloudevents.WithStructuredEncoding())
 	}
 
+	// Setup connection arguments.
+	connectionArgs := kncloudevents.ConnectionArgs{
+		MaxIdleConns:        defaultHTTPMaxIdleConnections,
+		MaxIdleConnsPerHost: defaultHTTPMaxIdleConnectionsPerHost,
+	}
+
 	// Make an http transport for the CloudEvents client.
 	t, err := cloudevents.NewHTTPTransport(tOpts...)
 	if err != nil {
 		return nil, err
 	}
 
-	// Add output tracing.
-	t.Client = &nethttp.Client{
-		Transport: &ochttp.Transport{
-			Propagation: &b3.HTTPFormat{},
-		},
-	}
-
-	// Use the transport to make a new CloudEvents client.
-	return cloudevents.NewClient(t)
+	return kncloudevents.NewDefaultClientGivenHTTPTransport(t, connectionArgs)
 }
