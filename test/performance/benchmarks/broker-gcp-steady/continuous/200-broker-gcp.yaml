@@ -45,7 +45,7 @@ spec:
               - "--roles=sender,receiver"
               - "--sink=http://broker-ingress.cloud-run-events/default/gcp"
               - "--aggregator=broker-gcp-aggregator:10000"
-              - "--pace=500:300"
+              - "--pace=900:300"
             env:
               - name: POD_NAME
                 valueFrom:
