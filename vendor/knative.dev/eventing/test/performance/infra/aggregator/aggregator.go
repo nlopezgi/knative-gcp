@@ -374,7 +374,7 @@ func (ag *Aggregator) RecordEvents(_ context.Context, in *pb.EventsRecordList) (
 			for id, t := range recIn.Events {
 				if _, exists := rec.Events[id]; exists {
 					log.Printf("!! Found duplicate %s event ID %s", recType, id)
-					continue
+					//continue
 				}
 				rec.Events[id] = t
 			}

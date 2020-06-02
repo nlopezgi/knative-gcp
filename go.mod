@@ -13,12 +13,8 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.4.0
-<<<<<<< HEAD
-	github.com/google/go-cmp v0.4.1
-=======
 	github.com/google/go-cmp v0.4.0
 	github.com/google/ko v0.5.1 // indirect
->>>>>>> db773c4f... gcp broker perf test
 	github.com/google/uuid v1.1.1
 	github.com/google/wire v0.4.0
 	github.com/googleapis/gax-go/v2 v2.0.5

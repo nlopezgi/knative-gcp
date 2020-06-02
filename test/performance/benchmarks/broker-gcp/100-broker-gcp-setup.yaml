@@ -26,7 +26,7 @@ spec: {}
 apiVersion: eventing.knative.dev/v1beta1
 kind: Trigger
 metadata:
-  name: broker-gcp
+  name: broker-gcp-receiver01
   namespace: default
 spec:
   broker: gcp
@@ -34,14 +34,14 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: broker-gcp-receiver
+      name: broker-gcp-receiver01
 
 ---
 
 apiVersion: eventing.knative.dev/v1beta1
 kind: Trigger
 metadata:
-  name: broker-gcp-sender1
+  name: broker-gcp-receiver02
   namespace: default
 spec:
   broker: gcp
@@ -49,14 +49,14 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: broker-gcp-sender1
+      name: broker-gcp-receiver02
 
 ---
 
 apiVersion: eventing.knative.dev/v1beta1
 kind: Trigger
 metadata:
-  name: broker-gcp-sender2
+  name: broker-gcp-receiver03
   namespace: default
 spec:
   broker: gcp
@@ -64,7 +64,113 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: broker-gcp-sender2
+      name: broker-gcp-receiver03
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver4
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver4
+
+---
+
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver5
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver5
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver6
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver6
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver7
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver7
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver8
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver8
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver9
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver9
+
+---
+
+apiVersion: eventing.knative.dev/v1beta1
+kind: Trigger
+metadata:
+  name: broker-gcp-receiver10
+  namespace: default
+spec:
+  broker: gcp
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: broker-gcp-receiver10
 
 ---
 
@@ -94,10 +200,145 @@ roleRef:
 apiVersion: v1
 kind: Service
 metadata:
-  name: broker-gcp-receiver
+  name: broker-gcp-receiver1
 spec:
   selector:
-    role: broker-gcp-receiver
+    role: broker-gcp-receiver1
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver2
+spec:
+  selector:
+    role: broker-gcp-receiver2
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver3
+spec:
+  selector:
+    role: broker-gcp-receiver3
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver4
+spec:
+  selector:
+    role: broker-gcp-receiver4
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver5
+spec:
+  selector:
+    role: broker-gcp-receiver5
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver6
+spec:
+  selector:
+    role: broker-gcp-receiver6
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver7
+spec:
+  selector:
+    role: broker-gcp-receiver7
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver8
+spec:
+  selector:
+    role: broker-gcp-receiver8
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver9
+spec:
+  selector:
+    role: broker-gcp-receiver9
+  ports:
+    - name: http
+      port: 80
+      targetPort: cloudevents
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-gcp-receiver10
+spec:
+  selector:
+    role: broker-gcp-receiver10
   ports:
     - name: http
       port: 80
