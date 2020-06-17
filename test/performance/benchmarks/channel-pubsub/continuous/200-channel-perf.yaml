@@ -45,7 +45,7 @@ spec:
               - "--roles=sender,receiver"
               - "--sink=http://cre-pubsub-test-channel-chan-publish.default.svc.cluster.local"
               - "--aggregator=channel-perf-aggregator:10000"
-              - "--pace=100:10,200:20,400:30,500:60,600:60,700:60"
+              - "--pace=100:10,400:20,600:30,800:60,900:60,1000:120"
             env:
               - name: POD_NAME
                 valueFrom:
