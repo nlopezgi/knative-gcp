@@ -88,7 +88,16 @@ func TestEventTransformationForSubscription(t *testing.T) {
 	}
 	cancel := logstream.Start(t)
 	defer cancel()
-	e2ehelpers.EventTransformationForSubscriptionTestHelper(context.Background(), t, e2ehelpers.SubscriptionV1beta1, channelTestRunner)
+	e2ehelpers.EventTransformationForSubscriptionTestHelper(context.Background(), t, e2ehelpers.SubscriptionV1beta1, channelTestRunner,
+		func(client *eventingtestlib.Client) {
+			// This test is running based on code in knative/eventing, so it does not use the same
+			// Client that tests in this repo use. Therefore, we need to duplicate the logic from this
+			// repo's Setup() here. See test/e2e/lifecycle.go's Setup() for the function used in this
+			// repo whose functionality we need to copy here.
+
+			// Copy the secret from the default namespace to the namespace used in the test.
+			lib.GetCredential(context.Background(), client, authConfig.WorkloadIdentity)
+		})
 }
 
 func TestChannelChain(t *testing.T) {
@@ -97,7 +106,16 @@ func TestChannelChain(t *testing.T) {
 	}
 	cancel := logstream.Start(t)
 	defer cancel()
-	e2ehelpers.ChannelChainTestHelper(context.Background(), t, e2ehelpers.SubscriptionV1beta1, channelTestRunner)
+	e2ehelpers.ChannelChainTestHelper(context.Background(), t, e2ehelpers.SubscriptionV1beta1, channelTestRunner,
+		func(client *eventingtestlib.Client) {
+			// This test is running based on code in knative/eventing, so it does not use the same
+			// Client that tests in this repo use. Therefore, we need to duplicate the logic from this
+			// repo's Setup() here. See test/e2e/lifecycle.go's Setup() for the function used in this
+			// repo whose functionality we need to copy here.
+
+			// Copy the secret from the default namespace to the namespace used in the test.
+			lib.GetCredential(context.Background(), client, authConfig.WorkloadIdentity)
+		})
 }
 
 func TestEventTransformationForTrigger(t *testing.T) {
